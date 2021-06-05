@@ -6,12 +6,17 @@ VALUE = 1000
 # Satoshis you want to pay in fees
 FEES = 100
 
+# UTXO values
 UTXOS_VALUES = [1, 123, 1432, 12, 21]
 
 POPULATION_SIZE = 5
 
 POPULATION = []
 
+'''
+1. Each individual of our population is a UTXO combination
+2. Individuals don't have a fixed gene size
+'''
 def create_population(utxos_values):
     utxos_size = len(utxos_values)
     
