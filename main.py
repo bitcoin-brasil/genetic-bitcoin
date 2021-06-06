@@ -1,26 +1,38 @@
 from random import randrange, choice
 
 # Satoshis you want to spend
-VALUE = 10000
+VALUE = 60000
 
 # Satoshis you want to pay in fees in satoshis
-FEES = 100
+FEES = 1000
 
 # UTXO values in satoshis
-UTXOS_VALUES = [100, 12300, 1432, 3500, 120, 500, 1234]
+UTXOS_VALUES = [309, 357, 314, 481, 488, 747, 741, 600, 
+1454, 1543, 1196, 2830, 12528, 14962, 20836, 34551, 37042, 29824, 49121]
 
 POPULATION_SIZE = 5
 
-POPULATION = []
+GENERATIONS = 1000
 
-def crossover():
-    for individual in POPULATION:
-        individual = fitness()
+def mutation(population):
+    best_individual = population[0]
+    population = create_population(UTXOS_VALUES, POPULATION_SIZE - 1)
+    population.append(best_individual)
+    return population
+    
 
-def fitness():
+def crossover(population):
+    best_individual = fitness(population)
+    print(best_individual)
+    population = []
+    for _ in range(POPULATION_SIZE):
+        population.append(best_individual)
+    return mutation(population)
+
+def fitness(population):
     best = 2100000091203921039021931
     best_individual = []
-    for individual in POPULATION:
+    for individual in population:
         fitness = (sum(individual) - (VALUE + FEES))
         if fitness >= 0 and fitness < best:
             best = fitness
@@ -34,10 +46,11 @@ def fitness():
 1. Each individual of our population is a UTXO combination
 2. Individuals don't have a fixed gene size
 '''
-def create_population(utxos_values):
+def create_population(utxos_values, population_size):
+    population = []
     utxos_size = len(utxos_values)
     
-    for _ in range(0, POPULATION_SIZE):
+    for _ in range(0, population_size):
         genes_num = randrange(1, utxos_size)
         individual = []
         choice_value = 0
@@ -49,12 +62,16 @@ def create_population(utxos_values):
                 else:
                     individual.append(choice_value)
                     break
-        POPULATION.append(individual)
+        population.append(individual)
+    
+    return population
     
     
 def genetic_algorithm():
-    create_population(UTXOS_VALUES)
-    print(POPULATION)
-    fitness()
+    population = create_population(UTXOS_VALUES, POPULATION_SIZE)
+    
+    for _ in range(1000):
+        population = crossover(population)
+        
 
 genetic_algorithm()
