@@ -70,7 +70,7 @@ def create_population(utxos_values, population_size):
 def genetic_algorithm():
     population = create_population(UTXOS_VALUES, POPULATION_SIZE)
     
-    for _ in range(1000):
+    for _ in range(GENERATIONS):
         population = crossover(population)
         
 
